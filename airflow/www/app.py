@@ -67,6 +67,9 @@ def create_app(config=None, testing=False):
     if config:
         app.config.from_mapping(config)
 
+    if 'SQLALCHEMY_ENGINE_OPTIONS' not in app.config:
+        app.config['SQLALCHEMY_ENGINE_OPTIONS'] = settings.prepare_engine_args()
+
     csrf.init_app(app)
 
     app.config['TESTING'] = testing
