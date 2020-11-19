@@ -92,43 +92,6 @@ pod_template_file using the ``dag_in_image`` setting:
     :start-after:  [START git_sync_template]
     :end-before: [END git_sync_template]
 
-.. _concepts:pod_override:
-
-pod_override
-############
-
-When using the KubernetesExecutor, Airflow offers the ability to override system defaults on a per-task basis.
-To utilize this functionality, create a Kubernetes V1pod object and fill in your desired overrides.
-Please note that the scheduler will override the ``metadata.name`` of the V1pod before launching it.
-
-To overwrite the base container of the pod launched by the KubernetesExecutor,
-create a V1pod with a single container, and overwrite the fields as follows:
-
-.. exampleinclude:: /../airflow/example_dags/example_kubernetes_executor_config.py
-    :language: python
-    :start-after: [START task_with_volume]
-    :end-before: [END task_with_volume]
-
-Note that volume mounts environment variables, ports, and devices will all be extended instead of overwritten.
-
-To add a sidecar container to the launched pod, create a V1pod with an empty first container with the
-name ``base`` and a second container containing your desired sidecar.
-
-.. exampleinclude:: /../airflow/example_dags/example_kubernetes_executor_config.py
-    :language: python
-    :start-after: [START task_with_sidecar]
-    :end-before: [END task_with_sidecar]
-
-You can also create custom ``pod_template_file`` on a per-task basis so that you can recycle the same base values between multiple tasks.
-This will replace the default ``pod_template_file`` named in the airflow.cfg and then override that template using the ``pod_override_spec``.
-
-Here is an example of a task with both features:
-
-.. exampleinclude:: /../airflow/example_dags/example_kubernetes_executor_config.py
-    :language: python
-    :start-after: [START task_with_template]
-    :end-before: [END task_with_template]
-
 KubernetesExecutor Architecture
 ################################
 
